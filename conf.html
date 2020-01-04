@@ -1,0 +1,29 @@
+<script type="text/javascript">
+  RED.nodes.registerType('zapierconf',{
+      category: 'config',
+      defaults: {
+          baseurl: {default: ""}
+      }
+      credentials: {
+        token: {},
+      },
+      label: function() {
+          return 'token';
+      }
+  });
+</script>
+
+<script type="text/x-red" data-template-name="zapierconf">
+<div class="form-row">
+    <label for="node-config-input-token">token</label>
+    <input type="text" id="node-config-input-token" placeholder="token">
+</div>
+<div class="form-row">
+  <label for="node-config-input-baseurl">baseurl</label>
+  <input type="text" id="node-config-input-baseurl" placeholder="baseurl">
+</div>
+</script>
+
+<script type="text/x-red" data-help-name="zapierconf">
+ 
+</script>
