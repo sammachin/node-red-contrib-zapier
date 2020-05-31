@@ -1,16 +1,60 @@
-
 module.exports = function(RED) {
-    function action(config) {
-      RED.nodes.eachNode(function(node) {
-        console.log(node);
-      });
-      RED.nodes.createNode(this, config);
+    function action(n) {
+      RED.nodes.createNode(this, n);
       var node = this;
-      this.creds = RED.nodes.getNode(config.creds);
-      node.on('input', function(msg) {
+      this.name = n.name
+      let o ={}
+      o.name = this.name 
+      o.id = this.id
+      action_nodes.push(o)
+      this.token = RED.nodes.getNode(n.conf).token;
+      this.on('newAction', function(body){
+        var msg = {};
+        msg.payload=body.payload
+        msg.topic=body.topic || ""
         node.send(msg);
-      });
+      })
+      this.on("close",function() {
+        var node = this;
+        action_nodes.map(function(x, i){
+          if (x.id == node.id){
+              action_nodes.splice(i, 1)
+          }
+        })      
+      })
   }
 
- RED.nodes.registerType("zapier_action",action);
+RED.nodes.registerType("zapier_action",action);
+ 
+RED.httpNode.post('/_zapier/actions/:id', function(req, res){ 
+  let target_node = RED.nodes.getNode(req.params.id)
+  if (target_node){
+    if (target_node.token == req.headers['x-token']){
+      target_node.emit('newAction', req.body)
+      res.send(req.body);
+    } else {
+      res.sendStatus(403);
+    }
+  } else {
+    res.sendStatus(404);      
+  }
+})
+
+var action_nodes = []
+
+RED.httpNode.get('/_zapier/actions', function(req, res){
+  var tokens = []
+  for (x in action_nodes){
+    let nid = action_nodes[x]['id']
+    tokens.push(RED.nodes.getNode(nid).token)
+  }
+  if (tokens.indexOf(req.headers['x-token']) > -1) {
+    res.json({actions : action_nodes});
+  } else{
+    res.sendStatus(403);
+  }
+})
+
+
+  
 }

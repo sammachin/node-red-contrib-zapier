@@ -1,8 +1,22 @@
 module.exports = function(RED) {
- RED.nodes.registerType("zapierconf",zapierconf,{
-   credentials: {
-     baseurl : {type:"text"},
-     token: {type:"text"}
-   }
- });
+  var tokens = []
+
+  function zapierConf(n) {
+    RED.nodes.createNode(this,n);
+    this.token = n.token;
+    tokens.push(this.token)
+    this.on('close', function() {
+      tokens = tokens.filter(function(ele){ return ele != this.token; });
+    })
+  }
+
+  RED.nodes.registerType("zapier_conf", zapierConf);
+
+  RED.httpNode.get('/_zapier/test', function(req, res){
+    if (tokens.indexOf(req.headers['x-token']) > -1) {
+      res.send('ok');
+    } else{
+      res.send(403);
+    }
+  })
 }

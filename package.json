@@ -12,10 +12,12 @@
     "keywords": [ "node-red", "zapier" ],
     "node-red": {
         "nodes": {
+            "zapier_conf" : "conf.js",
             "zapier_trigger": "trigger.js",
             "zapier_action" : "action.js"
         }
     },
     "dependencies": {
+        "request" : "*"
     }
 }

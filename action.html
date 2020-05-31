@@ -1,23 +1,24 @@
 <script type="text/javascript">
     RED.nodes.registerType('zapier_action',{
         category: 'network',
-        color: '#ff8000',
+        color: '#FFFFFF',
         defaults: {
           name: {default: ""},
-          conf: {value:"", type:"zapierconf"},
+          conf: {value:"", type:"zapier_conf"},
         },
         inputs:0,
         outputs:1,
-        icon: "white-globe.png",
+        icon: "zapier.png",
         label: function() {
-            return this.name||"action";
-        }
+            return "action: "+this.name;
+        },
+        paletteLabel: "Zapier Action"
     });
 </script>
 
 <script type="text/x-red" data-template-name="zapier_action">
     <div class="form-row">
-        <label for="node-config-input-conf">Zapier Config </label>
+        <label for="node-config-input-conf">Zapier Config</label>
         <input type="text" id="node-input-conf" >
     </div>
 
