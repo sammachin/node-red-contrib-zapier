@@ -9,8 +9,7 @@ Your Node-RED instance will need to be exposed for HTTP requests from Zapier, we
 Zapier will authenticate itself to your Node-RED instance by using a token in the HTTP header, you can set this token to be any string you like or auto-generate a UUID within the config node.
 It is reccomended to only use one token per Node-RED instance.
 
-Currently the Zapier package is in invite only Beta so you will need to add it to your account ising this URL
-(https://zapier.com/developer/public-invite/102945/352463f7043484371f61bd11f368a2a5)
+Currently the Zapier package is in invite only Beta so you will need to add it to your account using this [Invite Link](https://zapier.com/developer/public-invite/102945/352463f7043484371f61bd11f368a2a5)
 
 No data flows through any services I control, the communication is direct between Zapier and your Node-RED instance.
 
