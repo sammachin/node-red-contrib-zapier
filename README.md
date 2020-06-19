@@ -10,10 +10,10 @@ Zapier will authenticate itself to your Node-RED instance by using a token in th
 It is reccomended to only use one token per Node-RED instance.
 
 Currently the Zapier package is in invite only Beta so you will need to add it to your account ising this URL
-[https://zapier.com/developer/public-invite/102945/352463f7043484371f61bd11f368a2a5]
+(https://zapier.com/developer/public-invite/102945/352463f7043484371f61bd11f368a2a5)
 
 No data flows through any services I control, the communication is direct between Zapier and your Node-RED instance.
 
 Please raise any issues in the GitHub repo.
 
-Checkout this video for a demo of it in action (https://www.youtube.com/watch?v=jDu459yPrcg)
+Checkout this [video](https://www.youtube.com/watch?v=jDu459yPrcg) for a demo of it in action 
