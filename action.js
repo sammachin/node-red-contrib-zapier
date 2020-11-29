@@ -1,3 +1,5 @@
+var bodyParser = require('body-parser')
+
 module.exports = function(RED) {
     function action(n) {
       RED.nodes.createNode(this, n);
@@ -25,7 +27,9 @@ module.exports = function(RED) {
   }
 
 RED.nodes.registerType("zapier_action",action);
- 
+
+RED.httpNode.use('/_zapier/actions/*', bodyParser.json());
+
 RED.httpNode.post('/_zapier/actions/:id', function(req, res){ 
   let target_node = RED.nodes.getNode(req.params.id)
   if (target_node){
