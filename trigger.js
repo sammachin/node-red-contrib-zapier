@@ -1,6 +1,7 @@
 
 var request = require('request');
-var clone = require("clone"); //only required for workaroun
+var bodyParser = require('body-parser')
+
 
 module.exports = function(RED) {
   function trigger(n) {
@@ -51,17 +52,15 @@ module.exports = function(RED) {
         })
   }
   RED.nodes.registerType("zapier_trigger",trigger);
+  
+  RED.httpNode.use('/_zapier/triggers/*', bodyParser.json());
 
   RED.httpNode.post('/_zapier/triggers/:id', function(req, res){ 
     let target_node = RED.nodes.getNode(req.params.id)
     if (target_node){
-      if (target_node.token == req.headers['x-token']){
+      if (target_node.token == req.headers['x-token']){//
         trigger_webhooks[req.params.id] = req.body.webhook
-        //let r = RED.settings.set('zapierTriggerWebhooks', trigger_webhooks)
-        //Workaround for bug in settings.js, fixed in https://github.com/node-red/node-red/pull/2584
-        let new_hooks = clone(trigger_webhooks)
-        let r = RED.settings.set('zapierTriggerWebhooks', new_hooks)
-        //end workaround
+        let r = RED.settings.set('zapierTriggerWebhooks', trigger_webhooks)
         r.then(function(v) {
           res.send({status: 'ok'});
         })
@@ -81,11 +80,7 @@ module.exports = function(RED) {
         if (Object.keys(trigger_webhooks).length == 0){
           RED.settings.delete('zapierTriggerWebhooks')
         } else {
-          //let r = RED.settings.set('zapierTriggerWebhooks', trigger_webhooks)
-          //Workaround for bug in settings.js, fixed in https://github.com/node-red/node-red/pull/2584
-          let new_hooks = clone(trigger_webhooks)
-          let r = RED.settings.set('zapierTriggerWebhooks', new_hooks)
-          //end workaround 
+          let r = RED.settings.set('zapierTriggerWebhooks', trigger_webhooks)
         }
         res.sendStatus(204);
       } else {
